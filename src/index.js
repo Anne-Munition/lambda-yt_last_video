@@ -9,11 +9,12 @@ exports.handler = async () => {
       channelId: 'UCkcE1FOArrDlPkVlsUFFO_w',
       part: 'snippet,id',
       order: 'date',
-      maxResults: 1,
+      maxResults: 10,
     },
   };
   const { data } = await axios.get(url, options);
-  const video = data.items[0];
+  const filtered = data.items.filter(x => x.snippet.liveBroadcastContent !== 'live');
+  const video = filtered[0];
   const title = decode(video.snippet.title);
   const videoId = video.id.videoId;
   return `"${title}" https://www.youtube.com/watch?v=${videoId}`;
